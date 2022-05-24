@@ -1,38 +1,12 @@
-package br.com.sistech.model;
+package br.com.sistech.dto.request;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+public class ItensPedidoRequest {
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "itens_pedido")
-public class ItensPedido extends PanacheEntityBase {
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
-	@Column(name = "id_produto")
-	private Long idProduto;
-
-	@Column(name = "produto")
+    private Long idProduto;
     private String produto;
-    
-	@Column(name = "quantidade")
 	private Integer quantidade;
-    
-	@Column(name = "valor")
 	private Double valor;
-	
-	@Column(name = "valor_total")
 	private Double valorTotal;
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
 
 	public Long getIdProduto() {
 		return idProduto;
@@ -65,7 +39,6 @@ public class ItensPedido extends PanacheEntityBase {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-
 
 	public Double getValorTotal() {
 		return valorTotal;

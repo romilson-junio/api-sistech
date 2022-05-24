@@ -1,17 +1,19 @@
 package br.com.sistech.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 
 @Entity
 @Table(name = "produto")
+@NamedNativeQueries({
+		@NamedNativeQuery(name="CONSULTAR_PRODUTO",
+				query = "SELECT * FROM produto where produto = :produto",
+				resultClass = Produto.class)
+
+})
 public class Produto extends PanacheEntityBase{
+
 	@Id
  	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
@@ -24,9 +26,6 @@ public class Produto extends PanacheEntityBase{
 
     @Column(name = "valor")
     private Double valor;
-    
-    @Column(name = "margen_lucro")
-    private Double margenLucro;
 
 	public Long getCodigo() {
 		return codigo;
@@ -58,14 +57,6 @@ public class Produto extends PanacheEntityBase{
 
 	public void setValor(Double valor) {
 		this.valor = valor;
-	}
-
-	public Double getMargenLucro() {
-		return margenLucro;
-	}
-
-	public void setMargenLucro(Double margenLucro) {
-		this.margenLucro = margenLucro;
 	}
 	
 }

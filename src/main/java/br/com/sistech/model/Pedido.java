@@ -4,42 +4,35 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.*;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
 @Entity
 @Table(name = "pedido")
-/*
-@NamedNativeQueries({
-	@NamedNativeQuery(name="INSERIR_USUARIO", 
-			  query = "INSERT INTO usuario (nome, email, senha, perfil) values (:nome, :email, :senha, :perfil)"),
-	@NamedNativeQuery(name="CONSULTAR_USUARIO", 
-	  query = "SELECT id, nome, email, senha, perfil FROM usuario where email = :email and senha = :senha", 
-	  resultClass = Pedido.class)
 
+@NamedNativeQueries({
+	@NamedNativeQuery(name="PEDIDO_POR_CLIENTE",
+	  query = "SELECT * FROM pedido where cliente.cpf = :cpf",
+	  resultClass = Pedido.class)
 })
-*/
+
 public class Pedido extends PanacheEntityBase{
 	@Id
  	@GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long codigo;
 
-	@Column(name = "vendedor")
-    private String vendedor;
-	
     @Column(name = "valor_total")
     private Double valorTotal;
 
-    @Column(name = "cpf_cliente")
-    private String cpfCliente;
-    
+	@ManyToOne
+	@JoinColumn(name = "client_id")
+	private Cliente cliente;
+
+	@ManyToOne
+	@JoinColumn(name = "vendedor_id")
+	private Usuario vendedor;
+
     @Column(name = "data")
     private Date data;
 
@@ -57,11 +50,11 @@ public class Pedido extends PanacheEntityBase{
 		this.codigo = codigo;
 	}
 
-	public String getVendedor() {
+	public Usuario getVendedor() {
 		return vendedor;
 	}
 
-	public void setVendedor(String vendedor) {
+	public void setVendedor(Usuario vendedor) {
 		this.vendedor = vendedor;
 	}
 
@@ -72,15 +65,6 @@ public class Pedido extends PanacheEntityBase{
 	public void setValorTotal(Double valorTotal) {
 		this.valorTotal = valorTotal;
 	}
-
-	public String getCpfCliente() {
-		return cpfCliente;
-	}
-
-	public void setCpfCliente(String cpfCliente) {
-		this.cpfCliente = cpfCliente;
-	}
-
 
 	public List<ItensPedido> getProdutos() {
 		return produtos;
@@ -98,7 +82,11 @@ public class Pedido extends PanacheEntityBase{
 		this.data = data;
 	}
 
+	public Cliente getCliente() {
+		return cliente;
+	}
 
-    
-    
+	public void setCliente(Cliente cliente) {
+		this.cliente = cliente;
+	}
 }

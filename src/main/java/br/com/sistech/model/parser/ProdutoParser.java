@@ -15,8 +15,6 @@ public class ProdutoParser {
     	dto.setProduto(entidade.getProduto());
     	dto.setQuantidade(entidade.getQuantidade());
     	dto.setValor(entidade.getValor());
-    	dto.setMargenLucro(entidade.getMargenLucro());
-      
         return dto;
     }
     public Produto entidade(ProdutoDto dto){
@@ -25,8 +23,6 @@ public class ProdutoParser {
     	entidade.setProduto(dto.getProduto());
     	entidade.setQuantidade(dto.getQuantidade());
     	entidade.setValor(dto.getValor());
-    	entidade.setMargenLucro(dto.getMargenLucro());
-    	
         return entidade;
     }
 }

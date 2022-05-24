@@ -1,6 +1,7 @@
 package br.com.sistech.service;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
 import javax.enterprise.context.RequestScoped;
@@ -8,45 +9,59 @@ import javax.inject.Inject;
 import javax.transaction.Transactional;
 
 import br.com.sistech.dao.PedidoDao;
-import br.com.sistech.dao.UsuarioDao;
 import br.com.sistech.dto.PedidoDto;
-import br.com.sistech.dto.UsuarioDto;
+import br.com.sistech.dto.request.PedidoRequest;
+import br.com.sistech.model.Cliente;
+import br.com.sistech.model.Pedido;
 import br.com.sistech.model.Usuario;
 import br.com.sistech.model.parser.PedidoParser;
-import br.com.sistech.model.parser.UsuarioParser;
 
 
 @RequestScoped
 public class PedidoService {
-	@Inject
+
+    @Inject
     PedidoDao dao;
-    
+
+    @Inject
+    ClienteSevice clienteSevice;
+
+    @Inject
+    UsuarioSevice usuarioSevice;
 
     public List<PedidoDto> listarPedidos(){
-        return dao.listarPedidos().stream().map(PedidoParser.get()::dto).collect(Collectors.toList());
+        List<Pedido> pedidos = dao.listarPedidos();
+        return pedidos.stream().map(PedidoParser.get()::dto).collect(Collectors.toList());
     }
 
     @Transactional(rollbackOn = Exception.class)
-	public PedidoDto incluirPedido(PedidoDto pedido) {
+	public void incluirPedido(PedidoRequest pedidoRequest) throws Exception {
 		// TODO Auto-generated method stub
-		dao.incluirPedido(PedidoParser.get().entidade(pedido));
-		return null;
+
+        if(Objects.isNull(pedidoRequest.getCliente())){
+            throw new Exception();
+        }
+        if(Objects.isNull(pedidoRequest.getVendedor())){
+            throw new Exception();
+        }
+        Cliente cliente = clienteSevice.buscarCliente(pedidoRequest.getCliente());
+        if(Objects.isNull(cliente)){
+            throw new Exception();
+        }
+        Usuario vendedor = usuarioSevice.buscarUsuario(pedidoRequest.getVendedor());
+        if(Objects.isNull(vendedor)){
+            throw new Exception();
+        }
+
+        Pedido pedido = PedidoParser.get().entidade(pedidoRequest);
+        pedido.setVendedor(vendedor);
+        pedido.setCliente(cliente);
+        dao.incluirPedido(pedido);
 	}
 
-    /*
-	public UsuarioDto buscarUsuario(UsuarioDto usuarioLogin) {
-		// TODO Auto-generated method stub
-		Usuario usuarioLogado = dao.buscarUsuario(usuarioLogin).get(0);
-		
-		return UsuarioParser.get().dto(usuarioLogado);
-	}
+    public List<PedidoDto> pedidoPorCliente(String cpf){
+        return dao.pedidosPorCliente(cpf).stream().map(PedidoParser.get()::dto).collect(Collectors.toList());
+    }
 
-	@Transactional(rollbackOn = Exception.class)
-	public void incluiUsuario(UsuarioDto novoUsuario) {
-		// TODO Auto-generated method stub
-		
-		dao.incluirUsuario(UsuarioParser.get().entidade(novoUsuario));
-	}
 
-	*/
 }

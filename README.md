@@ -10,3 +10,6 @@ You can run your application in dev mode that enables live coding using:
 ```shell script
 ./mvnw compile quarkus:dev
 ```
+
+
+http://localhost:8080/swagger-ui/

@@ -10,6 +10,7 @@ import javax.persistence.Query;
 import javax.persistence.TypedQuery;
 
 import br.com.sistech.dto.UsuarioDto;
+import br.com.sistech.dto.request.UsuarioRequest;
 import br.com.sistech.model.Usuario;
 import io.quarkus.panache.common.Sort;
 
@@ -29,24 +30,24 @@ public class UsuarioDao {
 		
 	}
 
-	public List<Usuario> buscarUsuario(UsuarioDto usuarioLogin) {
+	public Usuario buscarUsuario(UsuarioRequest usuarioLogin) {
 
 		String nomeSql = "CONSULTAR_USUARIO";
-		List<Usuario> usuarioLogado;
+		Usuario usuarioLogado;
 		TypedQuery<Usuario> query = em.createNamedQuery(nomeSql, Usuario.class);
 		query.setParameter("email", usuarioLogin.getEmail());
 		query.setParameter("senha", usuarioLogin.getSenha());
-		try {
-			
-			usuarioLogado = query.getResultList();
-		
-		} catch (NoResultException e) {
-		
-			usuarioLogado = null;
-		
-		}
-		
-		return usuarioLogado;
+		return query.getSingleResult();
+	}
+
+	public Usuario buscarUsuario(Long id) {
+
+		String nomeSql = "CONSULTAR_USUARIO_POR_ID";
+		Usuario usuario;
+		TypedQuery<Usuario> query = em.createNamedQuery(nomeSql, Usuario.class);
+		query.setParameter("id", id);
+		usuario = query.getSingleResult();
+		return usuario;
 	}
 
 	public void incluirUsuario(Usuario novoUsuario) {

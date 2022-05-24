@@ -1,25 +1,24 @@
 package br.com.sistech.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.NamedNativeQueries;
-import javax.persistence.NamedNativeQuery;
-import javax.persistence.Table;
+import javax.persistence.*;
 
 import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+import org.checkerframework.common.aliasing.qual.Unique;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "usuario")
 @NamedNativeQueries({
 	@NamedNativeQuery(name="INSERIR_USUARIO", 
-			  query = "INSERT INTO usuario (nome, email, senha, perfil) values (:nome, :email, :senha, :perfil)"),
+			query = "INSERT INTO usuario (nome, email, senha, perfil) values (:nome, :email, :senha, :perfil)"),
 	@NamedNativeQuery(name="CONSULTAR_USUARIO", 
-	  query = "SELECT id, nome, email, senha, perfil FROM usuario where email = :email and senha = :senha", 
-	  resultClass = Usuario.class)
-
+			query = "SELECT * FROM usuario where email = :email and senha = :senha",
+			resultClass = Usuario.class),
+	@NamedNativeQuery(name="CONSULTAR_USUARIO_POR_ID",
+			query = "SELECT * FROM usuario where id = :id",
+			resultClass = Usuario.class)
 })
 public class Usuario extends PanacheEntityBase{
 
@@ -29,8 +28,8 @@ public class Usuario extends PanacheEntityBase{
 
 		@Column(name = "nome")
 	    private String nome;
-		
-	    @Column(name = "email")
+
+	    @Column(name = "email", unique = true)
 	    private String email;
 
 	    @Column(name = "senha")
@@ -38,6 +37,9 @@ public class Usuario extends PanacheEntityBase{
 
 	    @Column(name = "perfil")
 	    private String perfil;
+
+		@OneToMany(mappedBy = "vendedor", cascade = CascadeType.ALL)
+		private List<Pedido> pedidos = new ArrayList<>();
 
 		public Long getId() {
 			return id;
@@ -79,7 +81,8 @@ public class Usuario extends PanacheEntityBase{
 		public void setPerfil(String perfil) {
 			this.perfil = perfil;
 		}
-	    
-	    
-	    
+
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
 }

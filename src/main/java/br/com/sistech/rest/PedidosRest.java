@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.sistech.dto.request.PedidoRequest;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -43,13 +44,8 @@ public class PedidosRest {
             }
     )
     public Response listar(){
-    	
-    	
 		return Response
-                .status(Response.Status.OK)
-                .entity(service.listarPedidos())
-                .build();
-    	
+                .status(Response.Status.OK).entity(service.listarPedidos()).build();
     }
     
     @POST
@@ -60,30 +56,18 @@ public class PedidosRest {
             description = "Pedido",
     		content = {
                     @Content(mediaType =  "application/json",
-                            schema = @Schema(implementation = PedidoDto.class))
+                            schema = @Schema(implementation = PedidoRequest.class))
             }
     )
-    public Response incluir(PedidoDto pedido){
-    	
-    	
-    	PedidoDto pedidoIncluido;
-    	
+    public Response incluir(PedidoRequest pedido){
     	try {
-    		pedidoIncluido = service.incluirPedido(pedido);
+    		service.incluirPedido(pedido);
     		return Response
-                    .status(Response.Status.CREATED)
-                    .header("Mensagem", "Listagem Realizada com Sucesso!")
-                    .build();
-    		
-		} catch (IndexOutOfBoundsException e) {
+                    .status(Response.Status.CREATED).header("Mensagem", "Listagem Realizada com Sucesso!").build();
+		} catch (Exception e) {
 			return Response
-	                .status(Response.Status.BAD_REQUEST)
-	                .entity("NÃO FOI POSSÍVEL REALIZAR ESTA OPERAÇÃO!")
-	                .build();
+	                .status(Response.Status.BAD_REQUEST).entity("NÃO FOI POSSÍVEL REALIZAR ESTA OPERAÇÃO!").build();
 		}
-    	
-		
-    	
     }
     
 }

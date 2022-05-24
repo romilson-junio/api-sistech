@@ -4,11 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.Produces;
+import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -52,15 +48,32 @@ public class ProdutoRest {
             }
     )
     public Response listar(){
-    	
-    	
 		return Response
                 .status(Response.Status.OK)
                 .entity(service.listarPedidos())
                 .build();
     	
     }
-    
+
+    @GET
+    @Path("/{produto}")
+    @Operation(summary = "Consultar Produto",
+            description = "Consultar Produto")
+    @APIResponse(responseCode = "201",
+            description = "Produtos",
+            content = {
+                    @Content(mediaType =  "application/json")
+            }
+    )
+    public Response consultarProduto(@PathParam("produto") String produto){
+        return Response
+                .status(Response.Status.OK)
+                .entity(service.consultarProduto(produto))
+                .build();
+
+    }
+
+
     @POST
     @Path("/incluir")
     @Operation(summary = "Incluir Produto",

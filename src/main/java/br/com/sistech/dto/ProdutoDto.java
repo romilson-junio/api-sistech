@@ -6,7 +6,7 @@ public class ProdutoDto {
     private String produto;
     private Integer quantidade;
     private Double valor;
-    private Double margenLucro;
+
 	public Long getCodigo() {
 		return codigo;
 	}
@@ -32,13 +32,5 @@ public class ProdutoDto {
 	public void setValor(Double valor) {
 		this.valor = valor;
 	}
-	public Double getMargenLucro() {
-		return margenLucro;
-	}
-	public void setMargenLucro(Double margenLucro) {
-		this.margenLucro = margenLucro;
-	}
 
-    
-    
 }

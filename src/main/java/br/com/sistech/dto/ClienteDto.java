@@ -3,14 +3,14 @@ package br.com.sistech.dto;
 import java.util.ArrayList;
 import java.util.List;
 
-public class UsuarioDto {
+public class ClienteDto {
 
 	private Long id;
     private String email;
     private String nome;
-    private String senha;
-    private String perfil;
+    private String cpf;
 	private List<PedidoDto> pedidos = new ArrayList<>();
+	private List<EnderecoDto> enderecos = new ArrayList<>();
 
 	public Long getId() {
 		return id;
@@ -18,14 +18,6 @@ public class UsuarioDto {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public String getNome() {
-		return nome;
-	}
-
-	public void setNome(String nome) {
-		this.nome = nome;
 	}
 
 	public String getEmail() {
@@ -36,23 +28,31 @@ public class UsuarioDto {
 		this.email = email;
 	}
 
-	public String getSenha() {
-		return senha;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setSenha(String senha) {
-		this.senha = senha;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public String getPerfil() {
-		return perfil;
+	public String getCpf() {
+		return cpf;
 	}
 
-	public void setPerfil(String perfil) {
-		this.perfil = perfil;
+	public void setCpf(String cpf) {
+		this.cpf = cpf;
 	}
 
 	public List<PedidoDto> getPedidos() {
 		return pedidos;
+	}
+
+	public List<EnderecoDto> getEnderecos() {
+		return enderecos;
+	}
+
+	public void setEnderecos(List<EnderecoDto> enderecos) {
+		this.enderecos = enderecos;
 	}
 }

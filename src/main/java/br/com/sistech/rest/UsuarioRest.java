@@ -9,6 +9,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import br.com.sistech.dto.request.UsuarioRequest;
 import org.eclipse.microprofile.openapi.annotations.Operation;
 import org.eclipse.microprofile.openapi.annotations.media.Content;
 import org.eclipse.microprofile.openapi.annotations.media.Schema;
@@ -41,11 +42,11 @@ import br.com.sistech.service.UsuarioSevice;
 	    @Operation(summary = "Logar", description = "Logar")
 	    @APIResponse(responseCode = "200", description = "Usuarios", content = {
 			@Content(mediaType =  "application/json",
-				schema = @Schema(implementation = UsuarioDto.class))
+				schema = @Schema(implementation = UsuarioRequest.class))
 			}
 	    )
-	    public Response logar(UsuarioDto usuarioLogin){
-	    	
+	    public Response logar(UsuarioRequest usuarioLogin){
+
 	    	UsuarioDto usuarioLogado;
 	    	
 	    	try {
